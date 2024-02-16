@@ -78,13 +78,18 @@ test:
     - pip check
 
 about:
-  home: https://github.com/simplejson/simplejson
-  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  home: https://github.com/pism/pism
+  summary: 'PISM, a Parallel Ice Sheet Model'
   description: |
-    simplejson is a simple, fast, complete, correct and extensible
-    JSON <https://json.org> encoder and decoder for Python 2.5+ and
-    Python 3.3+. It is pure Python code with no dependencies, but includes
-    an optional C extension for a serious speed boost.
+    The Parallel Ice Sheet Model is an open source, parallel, high-resolution ice sheet model:
+      - hierarchy of available stress balances
+      - marine ice sheet physics, dynamic calving fronts
+      - polythermal, enthalpy-based conservation of energy scheme
+      - extensible coupling to atmospheric and ocean models
+      - verification and validation tools
+      - `documentation <pism-manual_>`_ for users and developers
+      - uses MPI_ and PETSc_ for parallel simulations
+      - reads and writes `CF-compliant <cf_>`_  NetCDF_ files
   # Remember to specify the license variants for BSD, Apache, GPL, and LGPL.
   # Use the SPDX identifier, e.g: GPL-2.0-only instead of GNU General Public License version 2.0
   # See https://spdx.org/licenses/
