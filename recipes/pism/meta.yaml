@@ -5,8 +5,8 @@
 # Jinja variables help maintain the recipe as you'll update the version only here.
 # Using the name variable with the URL in line 16 is convenient
 # when copying and pasting from another recipe, but not really needed.
-{% set name = "simplejson" %}
-{% set version = "3.8.2" %}
+{% set name = "pism" %}
+{% set version = "2.1" %}
 
 package:
   name: {{ PISM|lower }}
@@ -48,13 +48,16 @@ requirements:
     - python
     - pip
     - hdf5
+    - hdf5 * mpi_{{ mpi }}_*
+    - fftw
+    - fftw * mpi_{{ mpi }}_*
     - netcdf-cxx4
     - cmake
     - gsl
+    - {{ mpi }}
     - udunits2
     - proj
     - lapack
-    - fftw
     - petsc
     - petsc4py
     - nose
@@ -62,6 +65,26 @@ requirements:
     - tbb=2020.2
   run:
     - python
+    - pip
+    - hdf5
+    - hdf5 * mpi_{{ mpi }}_*
+    - fftw
+    - fftw * mpi_{{ mpi }}_*
+    - netcdf-cxx4
+    - cmake
+    - gsl
+    - {{ mpi }}
+    - udunits2
+    - proj
+    - lapack
+    - petsc
+    - petsc4py
+    - nose
+    - doxygen
+    - tbb=2020.2
+    - xarray
+    - pandas
+    - matplotlib
 
 test:
   # Some packages might need a `test/commands` key to check CLI.
@@ -93,22 +116,22 @@ about:
   # Remember to specify the license variants for BSD, Apache, GPL, and LGPL.
   # Use the SPDX identifier, e.g: GPL-2.0-only instead of GNU General Public License version 2.0
   # See https://spdx.org/licenses/
-  license: MIT
+  license: GPL-3.0-or-later
   # The license_family, i.e. "BSD" if license is "BSD-3-Clause". 
   # Optional
-  license_family: MIT
+  license_family: GPL
   # It is required to include a license file in the package,
   # (even if the license doesn't require it) using the license_file entry.
   # Please also note that some projects have multiple license files which all need to be added using a valid yaml list.
   # See https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#license-file
   license_file: LICENSE.txt
   # The doc_url and dev_url are optional.
-  doc_url: https://simplejson.readthedocs.io/
-  dev_url: https://github.com/simplejson/simplejson
+  doc_url: https://pism.io
+  dev_url: https://github.com/pism/pism
 
 extra:
   recipe-maintainers:
     # GitHub IDs for maintainers of the recipe.
     # Always check with the people listed below if they are OK becoming maintainers of the recipe. (There will be spam!)
-    - LisaSimpson
-    - LandoCalrissian
+    - aaschwanden
+    - ckhroulev
