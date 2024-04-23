@@ -20,3 +20,23 @@ CONDA_BUILD_SYSROOT:
 CONDA_BUILD_SYSROOT:
 - /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/MacOSX10.9.sdk
 
+
+CONDA_BUILD_SYSROOT:
+- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/MacOSX10.9.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/MacOSX10.9.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /opt/MacOSX10.9.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/opt//MacOSX10.9.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/opt//MacOSX10.9.sdk
+
