@@ -83,7 +83,7 @@ test:
     - pip
   commands:
     - pip check
-    - create_timeline.py -h
+    - pismr
 
 about:
   home: https://github.com/pism/pism
