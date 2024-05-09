@@ -26,6 +26,8 @@ requirements:
     - cmake
     - pkg-config
     - make
+    - swig
+    - nose
     - gnuconfig   # [unix]
     - {{ mpi }}  # [mpi == 'openmpi' and build_platform != target_platform]
   host:
