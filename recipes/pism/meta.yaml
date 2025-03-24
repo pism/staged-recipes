@@ -1,0 +1,111 @@
+{% set name = "pism" %}
+{% set version = "2.2.1" %}
+{% set build = 0 %}
+
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/pism/pism/archive/v{{ version }}.tar.gz
+  sha256: 98e21671e503c890c1f211b00166344798db8ff9109dcb97593febc0a124ebe2
+
+build:
+  skip: true  # [win]
+  number: {{ build }}
+
+  # add build string so packages can depend on mpi variants explicitly:
+  # `pism * mpi_mpich_*` for mpich
+  # `pism * mpi_openmpi_*` for openmpi
+  # `pism * mpi_*` for any mpi
+
+  {% set mpi = mpi or "mpich" %}
+  {% set mpi_prefix = "mpi_" + mpi %}
+  string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
+  run_exports:
+    - {{ pin_subpackage(name, max_pin='x.x') }}
+    - {{ name }} * {{ mpi_prefix }}_*
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake >=3.16
+    - pkg-config
+    - make
+    - swig
+    - nose  # Drop? listed as optional; used by PISM’s regression tests
+    - gnuconfig   # [unix]
+  host:
+    - python
+    - pip
+      - hdf5 * mpi_{{ mpi }}_*
+    - fftw * mpi_{{ mpi }}_*  # how to specify >=3.1?
+    - netcdf-cxx4 >=4.4  # pnetcdf?
+    - gsl >=1.15
+    - {{ mpi }}
+    - udunits2
+    - proj >=6.0
+    # - lapack  # ??
+    - petsc >=3.11
+    - petsc4py
+    - nose  # Drop? listed as optional; used by PISM’s regression tests
+    - doxygen  # For docs
+    #  - tbb =2020.2  # ??
+    - yac * mpi_{{ mpi }}_*
+  run:
+    - python
+    - pip
+    - hdf5
+    - hdf5 * mpi_{{ mpi }}_*
+    - fftw
+    - fftw * mpi_{{ mpi }}_*
+    - netcdf-cxx4
+    - cmake
+    - gsl
+    - {{ mpi }}
+    - udunits2
+    - proj
+    # - lapack  # ??
+    - petsc
+    - petsc4py
+    #  - tbb =2020.2  # ??
+    # Nice-to-haves: different build target?
+    # - xarray
+    # - pandas
+    # - matplotlib
+
+test:
+  imports:
+    - import PISM
+  requires:
+    - pip
+  commands:
+    - pip check
+    - pism
+
+about:
+  home: https://github.com/pism/pism
+  summary: PISM, a Parallel Ice Sheet Model
+  description: |
+    The Parallel Ice Sheet Model is an open source, parallel, high-resolution ice sheet model:
+      - hierarchy of available stress balances
+      - marine ice sheet physics, dynamic calving fronts
+      - polythermal, enthalpy-based conservation of energy scheme
+      - extensible coupling to atmospheric and ocean models
+      - verification and validation tools
+      - `documentation <pism-manual_>`_ for users and developers
+      - uses MPI_ and PETSc_ for parallel simulations
+      - reads and writes `CF-compliant <cf_>`_  NetCDF_ files
+  license: GPL-3.0-or-later
+  license_family: GPL
+  license_file: COPYING
+  doc_url: https://pism.io
+  dev_url: https://github.com/pism/pism
+
+extra:
+  recipe-maintainers:
+    - aaschwanden
+    - ckhroulev
+    - jhkennedy
