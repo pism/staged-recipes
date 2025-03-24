@@ -12,7 +12,7 @@ source:
   sha256: 98e21671e503c890c1f211b00166344798db8ff9109dcb97593febc0a124ebe2
 
 build:
-  skip: true  # [win]
+  skip: true  # [win or mpi == 'openmpi']
   number: {{ build }}
 
   # add build string so packages can depend on mpi variants explicitly:
@@ -35,50 +35,57 @@ requirements:
     - pkg-config
     - make
     - swig
-    - nose  # Drop? listed as optional; used by PISM’s regression tests
     - gnuconfig   # [unix]
   host:
     - python
-    - pip
-      - hdf5 * mpi_{{ mpi }}_*
-    - fftw * mpi_{{ mpi }}_*  # how to specify >=3.1?
-    - netcdf-cxx4 >=4.4  # pnetcdf?
+    - fftw * mpi_{{ mpi }}_*
+    - libnetcdf * mpi_{{ mpi }}_*
     - gsl >=1.15
     - {{ mpi }}
     - udunits2
-    - proj >=6.0
-    # - lapack  # ??
-    - petsc >=3.11
+    - proj
+    - liblzma-devel  # Needed for `pkg-config --exists proj` on at least some python version
+    - petsc
     - petsc4py
     - nose  # Drop? listed as optional; used by PISM’s regression tests
-    - doxygen  # For docs
-    #  - tbb =2020.2  # ??
     - yac * mpi_{{ mpi }}_*
+    # possible over linking for packages below; packaging errors like:
+    #     ERROR (pism,lib/libpism.so.2.2.1): Needed DSO lib/yac.so.4 found in ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2']
+    #      ERROR (pism,lib/libpism.so.2.2.1): .. but ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2'] not in reqs/run, (i.e. it is overlinking) (likely) or a missing dependency (less likely)
+    - blis
+    - libopenblas
+    - yaxt * mpi_{{ mpi }}_*
   run:
     - python
-    - pip
-    - hdf5
-    - hdf5 * mpi_{{ mpi }}_*
-    - fftw
     - fftw * mpi_{{ mpi }}_*
-    - netcdf-cxx4
-    - cmake
-    - gsl
+    - libnetcdf * mpi_{{ mpi }}_*
+    - gsl >=1.15
     - {{ mpi }}
     - udunits2
     - proj
-    # - lapack  # ??
+    - liblzma-devel  # Needed for `pkg-config --exists proj`
     - petsc
     - petsc4py
-    #  - tbb =2020.2  # ??
+    - nose  # Drop? listed as optional; used by PISM’s regression tests
+    - yac * mpi_{{ mpi }}_*
+    # possible over linking for packages below; packaging errors like:
+    #     ERROR (pism,lib/libpism.so.2.2.1): Needed DSO lib/yac.so.4 found in ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2']
+    #      ERROR (pism,lib/libpism.so.2.2.1): .. but ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2'] not in reqs/run, (i.e. it is overlinking) (likely) or a missing dependency (less likely)
+    - blis
+    - libopenblas
+    - yaxt * mpi_{{ mpi }}_*
+
+
     # Nice-to-haves: different build target?
     # - xarray
     # - pandas
     # - matplotlib
 
+
 test:
   imports:
-    - import PISM
+    - PISM
+    - siple
   requires:
     - pip
   commands:
