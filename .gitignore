@@ -1,3 +1,7 @@
+# PISM Specific
+build-recipes.err
+build-recipes.out
+
 # macOS folder metadata
 .DS_Store
 
