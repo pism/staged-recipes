@@ -1,5 +1,5 @@
 {% set name = "yaxt" %}
-{% set version = "0.11.2" %}
+{% set version = "0.11.3" %}
 {% set build = 0 %}
 
 package:
@@ -8,9 +8,12 @@ package:
 
 source:
   url: https://gitlab.dkrz.de/dkrz-sw/{{ name }}/-/archive/v{{ version }}/{{ name }}-v{{ version }}.tar.gz
-  sha256: e9a552641c3b52daed4d09a59ac879cbe7253acf8cb6d6855211f68c4d4f2227
+  sha256: 32737a1c09156a1491c62fc3ec9e0eb8d1ef958c7e0a7042c7fba3b352d81cd8
 
 build:
+  {% set mpi = mpi or "mpich" %}
+  {% set mpi_prefix = "mpi_" + mpi %}
+  
   skip: true  # [win]
   number: {{ build }}
 
@@ -19,8 +22,6 @@ build:
   # `yaxt * mpi_openmpi_*` for openmpi
   # `yaxt * mpi_*` for any mpi
 
-  {% set mpi = mpi or "mpich" %}
-  {% set mpi_prefix = "mpi_" + mpi %}
   string: {{ mpi_prefix }}_h{{ PKG_HASH }}_{{ build }}
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -29,7 +30,6 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - {{ compiler('fortran') }}
     - {{ stdlib('c') }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
@@ -40,17 +40,14 @@ requirements:
     - pkg-config
   host:
     - {{ mpi }}
-    - "{{ mpi }}-mpifort"
   run:
     - {{ mpi }}
-    - "{{ mpi }}-mpifort"
 
 test:
   commands:
-    - test -f ${PREFIX}/lib/libyaxt.so  # [linux]
-    - test -f ${PREFIX}/lib/libyaxt.dylib  # [osx]
+    - test -f ${PREFIX}/lib/libyaxt_c.so  # [linux]
+    - test -f ${PREFIX}/lib/libyaxt_c.dylib  # [osx]
     - test -f ${PREFIX}/include/yaxt.h
-    - test -f ${PREFIX}/include/yaxt.mod
 
 about:
   home: https://gitlab.dkrz.de/dkrz-sw/yaxt

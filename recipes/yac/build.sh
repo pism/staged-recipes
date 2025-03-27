@@ -5,7 +5,6 @@ set -x
 autoreconf -vfi
 
 export CC=mpicc
-export FC=mpifort
 
 if [[ "${mpi}" == "openmpi" ]]; then
   export MPI_LAUNCH="${PREFIX}/bin/mpirun --oversubscribe"
@@ -20,6 +19,7 @@ fi
             --disable-examples \
             --disable-tools \
             --disable-deprecated \
+            --disable-fortran-bindings \
             --enable-python-bindings \
             --with-pic
 

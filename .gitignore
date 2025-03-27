@@ -4,6 +4,7 @@ build-recipes.out
 
 # macOS folder metadata
 .DS_Store
+.ci_support
 
 # macOS specific files
 MacOSX*.sdk.tar.xz
