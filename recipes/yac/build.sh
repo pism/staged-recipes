@@ -36,9 +36,9 @@ elif [[ "${target_platform}" == linux-* ]]; then
 fi
 
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:${PREFIX}/lib/pkgconfig
-${CC} ${DL_TYPE} ./src/core/*.o $(pkg-config yac-core --variable clibs) -I${PREFIX}/include -o libyac_core.${DL_EXT}
-${CC} ${DL_TYPE} ./src/mci/*.o $(pkg-config yac-mci --variable clibs) -I${PREFIX}/include  -o libyac_mci.${DL_EXT}
-${CC} ${DL_TYPE} ./src/utils/*.o $(pkg-config yac-utils --variable clibs) -I${PREFIX}/include -o libyac_utils.${DL_EXT}
+${CC} ${DL_TYPE} ./src/core/*.o ./src/core/ppm/*.o $(pkg-config yac-core --variable clibs) -I${PREFIX}/include -o libyac_core.${DL_EXT}
+${CC} ${DL_TYPE} ./src/mci/*.o ./libyac_core.${DL_EXT} $(pkg-config yac-mci --variable clibs) -I${PREFIX}/include  -o libyac_mci.${DL_EXT}
+${CC} ${DL_TYPE} ./src/utils/*.o ./libyac_core.${DL_EXT} $(pkg-config yac-utils --variable clibs) -I${PREFIX}/include -o libyac_utils.${DL_EXT}
 
 cp libyac_core.${DL_EXT} ${PREFIX}/lib/
 cp libyac_mci.${DL_EXT} ${PREFIX}/lib/
