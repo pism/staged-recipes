@@ -6,11 +6,9 @@
 package:
   name: {{ name }}
   version: {{ version }}
-
 source:
   url: https://github.com/pism/pism/archive/v{{ version }}.tar.gz
   sha256: 98e21671e503c890c1f211b00166344798db8ff9109dcb97593febc0a124ebe2
-
 build:
   skip: true  # [win or mpi == 'openmpi']
   number: {{ build }}
@@ -47,12 +45,7 @@ requirements:
     - liblzma-devel  # Needed for `pkg-config --exists proj` on at least some python version
     - petsc
     - petsc4py
-    - nose  # Drop? listed as optional; used by PISM’s regression tests
     - yac * mpi_{{ mpi }}_*
-    # possible over linking for packages below; packaging errors like:
-    #     ERROR (pism,lib/libpism.so.2.2.1): Needed DSO lib/yac.so.4 found in ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2']
-    #      ERROR (pism,lib/libpism.so.2.2.1): .. but ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2'] not in reqs/run, (i.e. it is overlinking) (likely) or a missing dependency (less likely)
-    - blis
     - libopenblas
     - yaxt * mpi_{{ mpi }}_*
   run:
@@ -66,26 +59,12 @@ requirements:
     - liblzma-devel  # Needed for `pkg-config --exists proj`
     - petsc
     - petsc4py
-    - nose  # Drop? listed as optional; used by PISM’s regression tests
     - yac * mpi_{{ mpi }}_*
-    # possible over linking for packages below; packaging errors like:
-    #     ERROR (pism,lib/libpism.so.2.2.1): Needed DSO lib/yac.so.4 found in ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2']
-    #      ERROR (pism,lib/libpism.so.2.2.1): .. but ['conda-forge/linux-64::blis==0.9.0=h4ab18f5_2'] not in reqs/run, (i.e. it is overlinking) (likely) or a missing dependency (less likely)
-    - blis
     - libopenblas
     - yaxt * mpi_{{ mpi }}_*
 
-
-    # Nice-to-haves: different build target?
-    # - xarray
-    # - pandas
-    # - matplotlib
-
-
 test:
   imports:
-    - PISM
-    - siple
   requires:
     - pip
   commands:

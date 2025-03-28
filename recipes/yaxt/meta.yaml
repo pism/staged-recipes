@@ -30,6 +30,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
     - {{ stdlib('c') }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
@@ -40,15 +41,19 @@ requirements:
     - pkg-config
   host:
     - {{ mpi }}
+    - {{ mpi }}-mpifort
   run:
     - {{ mpi }}
-
+    - {{ mpi }}-mpifort
+    
 test:
   commands:
+    - test -f ${PREFIX}/lib/libyaxt.so  # [linux]
+    - test -f ${PREFIX}/lib/libyaxt.dylib  # [osx]
     - test -f ${PREFIX}/lib/libyaxt_c.so  # [linux]
     - test -f ${PREFIX}/lib/libyaxt_c.dylib  # [osx]
     - test -f ${PREFIX}/include/yaxt.h
-
+    - test -f ${PREFIX}/include/yaxt.mod
 about:
   home: https://gitlab.dkrz.de/dkrz-sw/yaxt
   summary: Yet Another eXchange Tool (yaxt) for coupling of Earth system model components.

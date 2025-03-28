@@ -5,7 +5,7 @@ set -x
 autoreconf -vfi
 
 export CC=mpicc
-export FC=no
+export FC=mpifort
 
 if [[ "${mpi}" == "openmpi" ]]; then
   export MPI_LAUNCH="${PREFIX}/bin/mpirun --oversubscribe"

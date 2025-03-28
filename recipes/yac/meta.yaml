@@ -31,6 +31,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - {{ stdlib('c') }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
@@ -41,9 +42,11 @@ requirements:
     - pkg-config
   host:
     - {{ mpi }}
+    - {{ mpi }}-mpifort
     - yaxt  * mpi_{{ mpi }}_*
     - liblapack
     - libopenblas  * *openmp*  # [osx]
+    - libgfortran
     - libfyaml
     - python
     - pip
@@ -53,9 +56,11 @@ requirements:
     - numpy
   run:
     - {{ mpi }}
+    - {{ mpi }}-mpifort
     - yaxt  * mpi_{{ mpi }}_*
     - libopenblas  * *openmp*  # [osx]
     - libfyaml
+    - libgfortran
     - python
     - mpi4py
 
@@ -74,7 +79,7 @@ test:
     - test -f ${PREFIX}/lib/libyac_utils.dylib  # [osx]
     - test -f ${PREFIX}/include/yac.h
     - test -f ${PREFIX}/include/yac_core.h
-
+   
 about:
   home: https://gitlab.dkrz.de/dkrz-sw/yac
   summary: YetAnotherCoupler (YAC) library for coupling of Earth system model components.
