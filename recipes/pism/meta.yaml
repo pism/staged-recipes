@@ -70,7 +70,7 @@ test:
     - pip
   commands:
     - pip check
-    - pism
+    - pism -eisII A -Mx 5 -My 5 -Mz 5 -y 1e3 -o eismint-A.nc
 
 about:
   home: https://github.com/pism/pism
