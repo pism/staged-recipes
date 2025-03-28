@@ -13,6 +13,7 @@ ARTIFACTS="$REPO_ROOT/build_artifacts"
 THISDIR="$( cd "$( dirname "$0" )" >/dev/null && pwd )"
 PROVIDER_DIR="$(basename "$THISDIR")"
 AZURE="${AZURE:-False}"
+CPU_COUNT=8
 
 docker info
 
