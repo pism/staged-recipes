@@ -18,6 +18,7 @@ cmake -D CMAKE_CXX_FLAGS="${optimization_flags}" \
       -D CMAKE_INSTALL_PREFIX="${PREFIX}" \
       -D CMAKE_INSTALL_LIBDIR=lib \
       -D Python3_EXECUTABLE=${PREFIX}/bin/python \
+      -D Pism_DEBUG=YES \
       -D Pism_BUILD_PYTHON_BINDINGS=YES \
       -D Pism_ENABLE_DOCUMENTATION=NO \
       -D Pism_PKG_CONFIG_STATIC=NO \

@@ -1,5 +1,5 @@
 {% set name = "pism" %}
-{% set version = "2.2.2" %}
+{% set version = "2.2.99" %}
 {% set build = 0 %}
 
 
@@ -7,8 +7,9 @@ package:
   name: {{ name }}
   version: {{ version }}
 source:
-  url: https://github.com/pism/pism/archive/v{{ version }}.tar.gz
-  sha256: bbd64f767ced12bdc5667488a48021c1a96fbce8771489d4923317cdc16b5271
+  git_url: https://github.com/pism/pism
+  git_branch: dev
+  git_depth: 1
 build:
   skip: true  # [win or mpi == 'openmpi']
   number: {{ build }}
