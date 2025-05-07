@@ -1,5 +1,5 @@
 {% set name = "yac" %}
-{% set version = "3.6.2" %}
+{% set version = "3.7.0" %}
 {% set build = 0 %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.dkrz.de/dkrz-sw/{{ name }}/-/archive/v{{ version }}/{{ name }}-v{{ version }}.tar.gz
-  sha256: f262cce53f51a541baeb22848db65ea1fd51ac96e6a28a5bf7ebbddece13e4ca
+  sha256: 6a16d37eb1bbb33e26f8247f84b9df8cb6503e6eb2e2b0af90fea572eec62c68
 
 build:
   {% set mpi = mpi or "mpich" %}
