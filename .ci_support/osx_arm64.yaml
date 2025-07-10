@@ -86,3 +86,15 @@ CONDA_BUILD_SYSROOT:
 CONDA_BUILD_SYSROOT:
 - /Users/andy/opt/MacOSX11.0.sdk
 
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/MacOSX11.0.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/MacOSX11.0.sdk
+
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/MacOSX11.0.sdk
+
