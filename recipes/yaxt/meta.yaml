@@ -1,5 +1,5 @@
 {% set name = "yaxt" %}
-{% set version = "0.11.4" %}
+{% set version = "0.11.5.1" %}
 {% set build = 0 %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.dkrz.de/dkrz-sw/{{ name }}/-/archive/v{{ version }}/{{ name }}-v{{ version }}.tar.gz
-  sha256: f9a9cbe573d5ee64d0393f467294dbc1f27911e3aa9b6a79decc508920ffdc66
+  sha256: 0bc97acd6cfd8e893318e59daa57e9063cf79644311fc71cdd00597cb89bcc29
 
 build:
   {% set mpi = mpi or "mpich" %}
