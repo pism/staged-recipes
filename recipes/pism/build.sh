@@ -21,7 +21,6 @@ cmake -D CMAKE_CXX_FLAGS="${optimization_flags}" \
       -D Pism_BUILD_PYTHON_BINDINGS=YES \
       -D Pism_ENABLE_DOCUMENTATION=NO \
       -D Pism_PKG_CONFIG_STATIC=NO \
-      -D Pism_USE_JANSSON=NO \
       -D Pism_USE_PARALLEL_NETCDF4=YES \
       -D Pism_USE_PROJ=YES \
       -D Pism_USE_YAC_INTERPOLATION=YES \
