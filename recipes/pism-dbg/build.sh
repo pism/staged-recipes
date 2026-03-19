@@ -25,7 +25,7 @@ cmake -D CMAKE_CXX_FLAGS="${optimization_flags}" \
       -D Pism_USE_JANSSON=NO \
       -D Pism_USE_PARALLEL_NETCDF4=YES \
       -D Pism_USE_PROJ=YES \
-      -D Pism_USE_YAC_INTERPOLATION=YES \
+      -D Pism_USE_YAC=YES \
       "${SRC_DIR}"
 
 
