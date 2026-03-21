@@ -37,7 +37,7 @@ elif [[ "${target_platform}" == linux-* ]]; then
 fi
 
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:${PREFIX}/lib/pkgconfig
-${CC} ${DL_TYPE} ./src/core/*.o ./src/core/ppm/*.o $(pkg-config yac-core --variable clibs) -I${PREFIX}/include -o libyac_core.${DL_EXT}
+${CC} ${DL_TYPE} ./src/core/*.o ./src/core/ppm/*.o ./src/core/grids/*.o ./src/core/interpolation/*.o ./src/core/interpolation/methods/*.o ./src/core/interpolation/operators/*.o $(pkg-config yac-core --variable clibs) -I${PREFIX}/include -o libyac_core.${DL_EXT}
 cp libyac_core.${DL_EXT} ${PREFIX}/lib/
 
 ${CC} ${DL_TYPE} ./src/mci/*.o -lyac_core $(pkg-config yac-mci --variable clibs) -I${PREFIX}/include -lgfortran -o libyac_mci.${DL_EXT}

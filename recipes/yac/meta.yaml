@@ -41,7 +41,7 @@ requirements:
     - make
     - pkg-config
   host:
-    - {{ mpi }}
+    - {{ mpi }} <5.0a0
     - {{ mpi }}-mpifort
     - yaxt * mpi_{{ mpi }}_*
     - liblapack

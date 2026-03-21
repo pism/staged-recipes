@@ -40,7 +40,7 @@ requirements:
     - fftw
     - libnetcdf * mpi_{{ mpi }}_*
     - gsl >=1.15
-    - {{ mpi }}
+    - {{ mpi }} <5.0a0
     - udunits2
     - proj
     - liblzma-devel  # Needed for `pkg-config --exists proj` on at least some python version
@@ -63,6 +63,7 @@ requirements:
     - yac * mpi_{{ mpi }}_*
     - libopenblas
     - yaxt * mpi_{{ mpi }}_*
+    - netcdf4 # needed for asynchronous writing
 
 test:
   imports:
