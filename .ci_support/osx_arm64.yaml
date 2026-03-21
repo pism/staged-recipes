@@ -110,3 +110,7 @@ CONDA_BUILD_SYSROOT:
 CONDA_BUILD_SYSROOT:
 - /Users/andy/base/staged-recipes/.pixi/macOS-SDKs/MacOSX11.0.sdk
 
+
+CONDA_BUILD_SYSROOT:
+- /Users/andy/base/staged-recipes/.pixi/macOS-SDKs/MacOSX11.0.sdk
+

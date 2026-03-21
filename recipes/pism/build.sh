@@ -17,7 +17,7 @@ export CXX="mpicxx"
 # On macOS, Python extension modules must not link libpython directly.
 # See pism-dev/build.sh for details.
 if [[ "${target_platform}" == osx-* ]]; then
-    sed -i.bak 's|TARGET_LINK_LIBRARIES(cpp ${Python3_LIBRARIES}|TARGET_LINK_LIBRARIES(cpp|' \
+    sed -i.bak 's|${Python3_LIBRARIES} ||g' \
         "${SRC_DIR}/src/pythonbindings/CMakeLists.txt"
 fi
 

@@ -20,7 +20,7 @@ export CXX="mpicxx"
 # copy, causing a segfault on import. Remove ${Python3_LIBRARIES} from
 # the SWIG module's link line so symbols resolve from the interpreter.
 if [[ "${target_platform}" == osx-* ]]; then
-    sed -i.bak 's|TARGET_LINK_LIBRARIES(cpp ${Python3_LIBRARIES}|TARGET_LINK_LIBRARIES(cpp|' \
+    sed -i.bak 's|${Python3_LIBRARIES} ||g' \
         "${SRC_DIR}/src/pythonbindings/CMakeLists.txt"
 fi
 
