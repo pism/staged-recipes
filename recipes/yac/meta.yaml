@@ -1,5 +1,5 @@
 {% set name = "yac" %}
-{% set version = "3.12.0" %}
+{% set version = "3.15.0" %}
 {% set build = 0 %}
 
 package:
@@ -8,8 +8,7 @@ package:
 
 source:
   url: https://gitlab.dkrz.de/dkrz-sw/{{ name }}/-/archive/v{{ version }}/{{ name }}-v{{ version }}.tar.gz
-  sha256: c3c5e19e781aab3e07a976ecbe513e95cfb0adac63db5ba9e61b9944203cd7f5
-  
+  sha256: 913b7f3aea01400b49e448d8eea723da6e105c94b5f75f1d2256dc877a895589
 build:
   {% set mpi = mpi or "mpich" %}
   {% set mpi_prefix = "mpi_" + mpi %}
@@ -35,9 +34,7 @@ requirements:
     - {{ stdlib('c') }}
     - llvm-openmp  # [osx]
     - libgomp      # [linux]
-    - autoconf
-    - automake
-    - libtool
+    - cmake
     - make
     - pkg-config
   host:
