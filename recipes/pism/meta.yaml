@@ -1,5 +1,5 @@
 {% set name = "pism" %}
-{% set version = "2.2.2" %}
+{% set version = "2.3.1" %}
 {% set build = 0 %}
 
 
@@ -8,7 +8,7 @@ package:
   version: {{ version }}
 source:
   url: https://github.com/pism/pism/archive/v{{ version }}.tar.gz
-  sha256: bbd64f767ced12bdc5667488a48021c1a96fbce8771489d4923317cdc16b5271
+  sha256: bf612658aa14e00771d1ea8e8796a7a4ab99fd3cff5037604748ccb2b470b33f
 build:
   skip: true  # [win]
   number: {{ build }}
@@ -77,7 +77,7 @@ test:
     - pip
   commands:
     - pip check
-    - pism -eisII A -Mx 5 -My 5 -Mz 5 -y 1e3 -o eismint-A.nc
+    - "mpirun -np 1 pism -eisII A -Mx 5 -My 5 -y 1e3 -spatial_times 100 -spatial_file spatial_eismint-A.nc -spatial_vars thk -o eismint-A.nc : -n 1 pism_async_writer -d"
 
 about:
   home: https://github.com/pism/pism

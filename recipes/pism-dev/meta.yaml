@@ -1,5 +1,5 @@
 {% set name = "pism-dev" %}
-{% set version = "2.2.99" %}
+{% set version = "2.3.99" %}
 {% set build = 0 %}
 
 
@@ -76,8 +76,8 @@ test:
     - pip
   commands:
     - pip check
-    - pism -eisII A -Mx 5 -My 5 -Mz 5 -y 1e3 -o eismint-A.nc
-
+    - "mpirun -np 1 pism -eisII A -Mx 5 -My 5 -y 1e3 -spatial_times 100 -spatial_file spatial_eismint-A.nc -spatial_vars thk -o eismint-A.nc : -n 1 pism_async_writer -d"
+    
 about:
   home: https://github.com/pism/pism
   summary: PISM, a Parallel Ice Sheet Model
