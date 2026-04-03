@@ -16,7 +16,8 @@ fi
 
 ./configure --prefix=${PREFIX} \
             --with-mpi-root=${PREFIX} \
-            --with-pic
+            --with-pic \
+            --disable-static
 
 make -j ${CPU_COUNT} all
 make install

@@ -2,8 +2,11 @@ mpi:
   - mpich
   - openmpi
 
+openmpi:
+  - '5'
+
 pin_run_as_build:
   mpich:
     max_pin: x.x
   openmpi:
-    max_pin: x.x
+    max_pin: x

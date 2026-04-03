@@ -93,3 +93,6 @@ win = ["win", "python", "build"]
 build = ["python", "build"]
 grayskull = ["python", "grayskull"]
 conda-smithy = ["python", "conda-smithy", "shellcheck"]
+
+[dependencies]
+conda-build = ">=26.3.0,<27"

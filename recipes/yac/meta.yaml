@@ -16,6 +16,11 @@ build:
   skip: true  # [win or py<39]
   number: {{ build }}
 
+  ignore_run_exports_from:
+  - python
+  - numpy
+  - mpi4py
+  
   # add build string so packages can depend on mpi variants explicitly:
   # `yac * mpi_mpich_*` for mpich
   # `yac * mpi_openmpi_*` for openmpi
@@ -38,7 +43,8 @@ requirements:
     - make
     - pkg-config
   host:
-    - {{ mpi }} <5.0a0
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - {{ mpi }}-mpifort
     - yaxt * mpi_{{ mpi }}_*
     - liblapack
@@ -52,13 +58,17 @@ requirements:
     - mpi4py
     - numpy
   run:
-    - {{ mpi }}
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - {{ mpi }}-mpifort
     - yaxt * mpi_{{ mpi }}_*
+    - liblapack
+    - blis  # [linux]
     - libopenblas * *openmp*  # [osx]
     - libfyaml
     - libgfortran
     - python
+    - numpy
     - mpi4py
 
 test:
@@ -66,6 +76,7 @@ test:
     - yac
   requires:
     - pip
+    - numpy
   commands:
     - pip check
     - test -f ${PREFIX}/lib/libyac_core.so  # [linux]

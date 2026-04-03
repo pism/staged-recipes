@@ -12,6 +12,7 @@ optimization_flags="-O3"
 
 export CC="mpicc"
 export CXX="mpicxx"
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${PREFIX}/share/pkgconfig:${PKG_CONFIG_PATH:-}"
 
 
 # On macOS, Python extension modules must not link libpython directly.

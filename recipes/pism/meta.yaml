@@ -40,10 +40,15 @@ requirements:
     - fftw
     - libnetcdf * mpi_{{ mpi }}_*
     - gsl >=1.15
-    - {{ mpi }}
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - udunits2
     - proj
-    - liblzma-devel  # Needed for `pkg-config --exists proj` on at least some python version
+    - libsqlite  # Needed for pkg-config to validate proj.pc Requires.private
+    - libtiff    # Needed for pkg-config to validate proj.pc Requires.private
+    - libcurl    # Needed for pkg-config to validate proj.pc Requires.private
+    - zlib       # Needed for pkg-config to validate libcurl.pc Requires.private
+    - liblzma-devel  # Needed for `pkg-config --exists proj`
     - petsc
     - petsc4py
     - yac * mpi_{{ mpi }}_*
@@ -54,10 +59,10 @@ requirements:
     - fftw
     - libnetcdf * mpi_{{ mpi }}_*
     - gsl >=1.15
-    - {{ mpi }} <5.0a0
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - udunits2
     - proj
-    - liblzma-devel  # Needed for `pkg-config --exists proj`
     - petsc
     - petsc4py
     - yac * mpi_{{ mpi }}_*

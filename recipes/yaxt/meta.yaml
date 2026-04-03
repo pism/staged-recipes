@@ -16,7 +16,7 @@ build:
   
   skip: true  # [win]
   number: {{ build }}
-
+  
   # add build string so packages can depend on mpi variants explicitly:
   # `yaxt * mpi_mpich_*` for mpich
   # `yaxt * mpi_openmpi_*` for openmpi
@@ -40,10 +40,12 @@ requirements:
     - make
     - pkg-config
   host:
-    - {{ mpi }} <5.0a0
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - {{ mpi }}-mpifort
   run:
-    - {{ mpi }}
+    - {{ mpi }} >=5  # [mpi == "openmpi"]
+    - {{ mpi }}      # [mpi != "openmpi"]
     - {{ mpi }}-mpifort
     
 test:

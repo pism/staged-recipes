@@ -1,9 +1,3 @@
-python:
- - 3.11
- - 3.12
- - 3.13
- - 3.14
- 
 mpi:
   - mpich
   - openmpi
@@ -12,4 +6,4 @@ pin_run_as_build:
   mpich:
     max_pin: x.x
   openmpi:
-    max_pin: x.x
+    max_pin: x
