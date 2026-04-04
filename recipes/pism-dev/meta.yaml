@@ -76,7 +76,7 @@ test:
     - pip
   commands:
     - pip check
-    - "mpirun -np 1 pism -eisII A -Mx 5 -My 5 -y 1e3 -spatial_times 100 -spatial_file spatial_eismint-A.nc -spatial_vars thk -o eismint-A.nc : -n 1 pism_async_writer -d"
+    - "mpirun -np 1 pism -eisII A -Mx 5 -My 5 -y 1e3 -spatial_times 100 -spatial_file spatial_eismint-A.nc -spatial_vars thk -o eismint-A.nc : -n 1 pism_async_writer"
     
 about:
   home: https://github.com/pism/pism
