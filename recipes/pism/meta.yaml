@@ -10,7 +10,7 @@ source:
   url: https://github.com/pism/pism/archive/v{{ version }}.tar.gz
   sha256: bf612658aa14e00771d1ea8e8796a7a4ab99fd3cff5037604748ccb2b470b33f
 build:
-  skip: true  # [win]
+  skip: true  # [win or mpi == 'mpich']
   number: {{ build }}
 
   # add build string so packages can depend on mpi variants explicitly:

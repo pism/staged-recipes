@@ -10,7 +10,7 @@ source:
   git_url: https://github.com/pism/pism.git
   git_branch: dev
 build:
-  skip: true  # [win]
+  skip: true  # [win or mpi == 'mpich']
   number: {{ build }}
 
   # add build string so packages can depend on mpi variants explicitly:
