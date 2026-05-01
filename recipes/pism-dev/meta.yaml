@@ -8,7 +8,7 @@ package:
   version: {{ version }}
 source:
   git_url: https://github.com/pism/pism.git
-  git_branch: dev
+  git_branch: feature/pyproject
 build:
   skip: true  # [win or mpi == 'mpich']
   number: {{ build }}
@@ -30,13 +30,15 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
-    - cmake >=3.16
+    - cmake >=3.20
     - pkg-config
     - make
     - swig
     - gnuconfig   # [unix]
   host:
     - python
+    - pip
+    - scikit-build-core >=0.10
     - fftw
     - libnetcdf * mpi_{{ mpi }}_*
     - gsl >=1.15
@@ -68,6 +70,7 @@ requirements:
     - libopenblas
     - yaxt * mpi_{{ mpi }}_*
     - netcdf4 # needed for asynchronous writing
+    - xarray
 
 test:
   imports:
