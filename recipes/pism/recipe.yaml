@@ -1,0 +1,112 @@
+schema_version: 1
+
+context:
+  name: pism
+  version: "2.3.2"
+  build: 0
+  mpi: ${{ mpi | default("mpich") }}
+  mpi_prefix: mpi_${{ mpi }}
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/pism/pism/archive/v${{ version }}.tar.gz
+  sha256: 6ee5c54483bac60fc2cb0d613822507d7ff9bdc1646c11f41d16d8555acb3a37
+
+build:
+  number: ${{ build }}
+  skip:
+    - win
+    - mpi == "mpich"
+  # Build string so packages can depend on mpi variants explicitly:
+  #   `pism * mpi_openmpi_*` for openmpi
+  #   `pism * mpi_*`         for any mpi
+  string: ${{ mpi_prefix }}_h${{ hash }}_${{ build }}
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - cmake >=3.16
+    - pkg-config
+    - make
+    - swig
+    - if: unix
+      then: gnuconfig
+  host:
+    - python
+    - fftw
+    - libnetcdf * ${{ mpi_prefix }}_*
+    - gsl >=1.15
+    - if: mpi == "openmpi"
+      then: ${{ mpi }} >=5
+      else: ${{ mpi }}
+    - udunits2
+    - proj
+    - libsqlite      # needed for pkg-config to validate proj.pc Requires.private
+    - libtiff        # needed for pkg-config to validate proj.pc Requires.private
+    - libcurl        # needed for pkg-config to validate proj.pc Requires.private
+    - zlib           # needed for pkg-config to validate libcurl.pc Requires.private
+    - liblzma-devel  # needed for `pkg-config --exists proj`
+    - petsc
+    - petsc4py
+    - yac * ${{ mpi_prefix }}_*
+    - libopenblas
+    - yaxt * ${{ mpi_prefix }}_*
+  run:
+    - python
+    - fftw
+    - libnetcdf * ${{ mpi_prefix }}_*
+    - gsl >=1.15
+    - if: mpi == "openmpi"
+      then: ${{ mpi }} >=5
+      else: ${{ mpi }}
+    - udunits2
+    - proj
+    - petsc
+    - petsc4py
+    - yac * ${{ mpi_prefix }}_*
+    - libopenblas
+    - yaxt * ${{ mpi_prefix }}_*
+    - netcdf4   # needed for asynchronous writing
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound="x.x") }}
+    - ${{ name }} * ${{ mpi_prefix }}_*
+
+tests:
+  - python:
+      imports:
+        - PISM
+  - script:
+      - pip check
+      - "mpirun -np 1 pism -eisII A -Mx 5 -My 5 -y 1e3 -spatial_times 100 -spatial_file spatial_eismint-A.nc -spatial_vars thk -o eismint-A.nc : -n 1 pism_async_writer"
+    requirements:
+      run:
+        - pip
+
+about:
+  homepage: https://github.com/pism/pism
+  summary: PISM, a Parallel Ice Sheet Model
+  description: |
+    The Parallel Ice Sheet Model is an open source, parallel, high-resolution ice sheet model:
+      - hierarchy of available stress balances
+      - marine ice sheet physics, dynamic calving fronts
+      - polythermal, enthalpy-based conservation of energy scheme
+      - extensible coupling to atmospheric and ocean models
+      - verification and validation tools
+      - `documentation <pism-manual_>`_ for users and developers
+      - uses MPI_ and PETSc_ for parallel simulations
+      - reads and writes `CF-compliant <cf_>`_  NetCDF_ files
+  license: GPL-3.0-or-later
+  license_file: COPYING
+  documentation: https://pism.io
+  repository: https://github.com/pism/pism
+
+extra:
+  recipe-maintainers:
+    - aaschwanden
+    - ckhroulev
+    - jhkennedy
