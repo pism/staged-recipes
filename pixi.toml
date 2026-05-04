@@ -32,6 +32,8 @@ rattler-build-conda-compat = ">=1.4.11,<2"
 [feature.linux]
 # The linux feature runs on every platform that can run Docker.
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
+[feature.linux.dependencies]
+rattler-build = "*"
 [feature.linux.tasks.build-linux]
 description = "build for Linux inside a docker container"
 cmd = "python build-locally.py --filter 'linux*'"
@@ -88,8 +90,8 @@ platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
 dependencies.shellcheck = ">=0.11.0,<0.12"
 
 [environments]
-# linux only needs Python to run build-locally.py. Everything else happens in Docker.
-linux = ["linux", "python"]
+# linux uses Docker for build-linux and rattler-build natively for rattler-linux.
+linux = ["linux", "python", "build"]
 # osx and win do run natively on the machine, so we need the build deps too
 osx = ["osx", "python", "build"]
 win = ["win", "python", "build"]
@@ -149,4 +151,55 @@ done
 """
 
 [feature.osx.tasks.rattler-osx.env]
-RATTLER_CACHE_DIR = "$HOME/.rattler-cache" 
+RATTLER_CACHE_DIR = "$HOME/.rattler-cache"
+
+[feature.linux.tasks.rattler-linux]
+description = "build all v1 recipes on linux-64 with rattler-build"
+# Per-recipe loop in explicit dependency order. Avoids the rattler-build
+# --recipe-dir topological-sort bug where pism-openmpi gets queued before
+# yac-openmpi when yac has both mpich+openmpi variants but pism is
+# openmpi-only. After each build, chmod 644 the new .conda artifacts so
+# the next recipe's rattler-build invocation can fetch them from the
+# local file:// channel (otherwise mode-600 .conda files cause an
+# intermittent "failed to fetch" error).
+#
+# We pass the conda-forge global pinning (-m .pixi/envs/linux/conda_build_config.yaml)
+# *before* the per-recipe one so the recipe-level mpi list overrides only what
+# we want overridden; everything else (python, openmpi, c_stdlib, ...) comes
+# from the global pinning, exactly like real conda-forge CI.
+cmd = """
+bash -ec '
+mkdir -p "$PIXI_PROJECT_ROOT/output";
+# Strip channel_sources / channel_targets from the global pinning
+# (rattler-build forbids them alongside -c flags). Everything else
+# (python, openmpi, c_stdlib, compiler versions, ...) is preserved.
+# The output must be named exactly "conda_build_config.yaml" or
+# rattler-build refuses to honor the # [selector] comments inside.
+GLOBAL_PIN_RAW="$PIXI_PROJECT_ROOT/.pixi/envs/linux/conda_build_config.yaml";
+GLOBAL_PIN_DIR="$PIXI_PROJECT_ROOT/output/global-pin-filtered";
+GLOBAL_PIN="$GLOBAL_PIN_DIR/conda_build_config.yaml";
+mkdir -p "$GLOBAL_PIN_DIR";
+python3 "$PIXI_PROJECT_ROOT/.scripts/filter-global-pin.py" "$GLOBAL_PIN_RAW" "$GLOBAL_PIN";
+for r in yaxt yac pism pism-dev; do
+  echo "=== Building $r ===";
+  rattler-build build \\
+      --recipe "recipes/$r/recipe.yaml" \\
+      -m "$GLOBAL_PIN" \\
+      -m "recipes/$r/conda_build_config.yaml" \\
+      -c "file://$PIXI_PROJECT_ROOT/output" \\
+      -c conda-forge \\
+      --target-platform linux-64 \\
+      --output-dir "$PIXI_PROJECT_ROOT/output" || break;
+  chmod 644 "$PIXI_PROJECT_ROOT/output/linux-64/"*.conda 2>/dev/null || true;
+  # Re-index with conda-index so the local channel repodata sha256s
+  # match the actual .conda files on disk. rattler-build occasionally
+  # records pre-finalized hashes that mismatch and downstream fetches
+  # then fail with "failed to fetch <pkg>.conda".
+  echo "  re-indexing local channel...";
+  python3 -m conda_index "$PIXI_PROJECT_ROOT/output" >/dev/null;
+done
+'
+"""
+
+[feature.linux.tasks.rattler-linux.env]
+RATTLER_CACHE_DIR = "$HOME/.rattler-cache"
